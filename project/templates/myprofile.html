@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>B Admin 2 - My Profile</title>
+    <link rel="stylesheet" type="text/css" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <!-- styles for this template MyProfile-->
+    <link href="{{ url_for('static', filename= 'css/stylemyprofile.css')}}" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{{ url_for('static', filename= 'css/sb-admin-2.min.css')}}" rel="stylesheet">
+</head>
+
+<body id="page-top">
+    <div id="accordionSidebar">
+    </div>
+    <section class="seccion-perfil-usuario">
+        <div class="perfil-usuario-header">
+            
+            <div class="perfil-usuario-portada">                
+                    <div class="perfil-usuario-avatar">
+                        <img id="imagen_" src="data:;base64,{{ user_image }}" >
+                   </div>       
+                    
+                    <!-- Sidebar - Brand -->
+                    <div class=" sidebar sidebar-dark accordion">
+                        <a class="sidebar-brand d-flex align-items-center justify-content-center"
+                            href="{{url_for('main.index')}}">
+                            <div class="sidebar-brand-icon rotate-n-15">
+                                <i class="fas fa-laugh-wink"></i>
+                            </div>
+                            <div class="sidebar-brand-text mx-3">Menu Principal </div>
+                        </a>
+                    </div>
+                    <div class="dropdown-divider"></div>
+            </div>
+        </div>
+        <div class="perfil-usuario-body">
+            <form method="POST" action="/myprofile"enctype="multipart/form-data">                
+                <div class="perfil-usuario-bio">
+                    <h1 class="titulo">{{ user_name }} {{ user_lname }} </h1>
+                    <button id="btnGuardar" class="btn btn-primary" type="submit" id="Guardar" disabled>Guardar</button>
+                </div>
+                         
+                <div class="perfil-usuario-footer left ">
+                    <ul class="lista-datos">
+                        <li><i class="icono fas fa-laugh-wink"></i> Email  :  {{ email }}</li>                                        
+                        <li><i class="icono fas fa-user"></i> Nombre : <input type="text" name="nombre"
+                                placeholder="nombre" value="{{ user_name }}" id="nombre" disabled> </li>
+                        <li><i class="icono fas fa-user"></i> Apellido : <input type="text" name="apellido"
+                                placeholder="apellido" value="{{ user_lname }}" id="apellido" disabled> </li>
+                        <li><i class="icono fas fa-phone-alt"></i> 042-876543</li>
+                        <li><i class="icono fas fa-building"></i> Universidad Espíritu Santo - UEES</li>
+                    </ul>
+                    <ul class="lista-datos">
+                        <li><i class="icono fas fa-map-marker-alt"></i> Av las Americas guayaquil - Ecuador </li>
+                        <li><i class="icono fas fa-clipboard-list"></i> Proyecto : 1 Parcial DAW</li>
+                        <li><i class="icono fas fa-user-check"></i><a class="collapse-item"
+                                href="{{url_for('auth.register')}}">Registro</a></li>
+
+
+
+
+                     <input  id="file"type="file" name="file">
+                                                
+                        <button class="contenedor-btn-file">Ingrese Imagen<label for="file"></label>
+                            <input id="file"type="file"name="file">
+                        </button>
+
+
+
+                        <li><i class="icono fas fa-circle"></i> Nueva clave : <input type="password" name="clave"
+                            placeholder="ingrese clave"  id="clave" disabled> </li>
+                    </ul>                    
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="activar"><i
+                                class="fas fa-edit fa-sm text-white-50"></i> Editar perfil</a>
+                    </div>
+                </div><br>
+            </form>
+
+            <div class="perfil-usuario-footer left ">
+                <p class="texto text-primary sidebar-brand d-flex  justify-content-center" id="1">Comentarios Ingresados <br></p>
+                <p >{{ comentario }} </p>
+            </div>
+
+            <div class="redes-sociales">
+                <a href="http://facebook.com" target="_blank" class="boton-redes facebook fab fa-facebook-f"></a>
+                <a href="http://twitter.com" target="_blank" class="boton-redes twitter fab fa-twitter"></a>
+                <a href="http://instagram.com" target="_blank" class="boton-redes instagram fab fa-instagram"></a>
+            </div>
+        </div>
+    </section>
+
+
+
+</body>
+<!--Script para validar que se esta enviando imagen -->
+<script>
+    var imageN = document.getElementById("file");
+    var imagenServer = new Image();
+    var k = imagenServer.src = "static/img/avatar.png"; //Si no se sube una imagen se pone una imagen 'avatar' por defecto
+    var guardar = document.getElementById("Guardar")
+    guardar.addEventListener('click', function(){
+        if( imageN.files.length == 0 ){
+            alert("No files selected");
+            imageN = k
+        }
+    }); 
+    
+</script>
+
+<!--Script para cambiar imagen -->
+<script>
+    function cambiar() {
+        var pdrs = document.getElementById('file-upload').files[0].name;
+        document.getElementById('info').innerHTML = pdrs;
+    }
+
+</script>
+<!--Script para habilitar botones y desactivar-->
+
+<script>
+    var activarButton = document.getElementById('activar');
+    var desactivarButton = document.getElementById('desactivar');
+
+    var idsCampos = ['nombre', 'apellido', 'clave', 'btnGuardar'];
+
+    activarButton.addEventListener('click', function () {
+        idsCampos.forEach(function (idCampo) {
+            elem = document.getElementById(idCampo);
+            elem.disabled = false;
+        });
+    });
+
+    desactivarButton.addEventListener('click', function () {
+        idsCampos.forEach(function (idCampo) {
+            elem = document.getElementById(idCampo);
+            elem.disabled = true;
+        });
+    });
+
+</script>
+
+
+</html>

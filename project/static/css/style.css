@@ -1,0 +1,6 @@
+.comments p:nth-child(even) {
+    background: rgb(255, 255, 255);
+   }
+   .comments p:nth-child(odd) {
+    background: rgb(201, 218, 235);
+   }
